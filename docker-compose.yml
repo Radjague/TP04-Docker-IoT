@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  broker:
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+
+  server:
+    build: ./server
+    depends_on:
+      - broker
+    restart: always
+
+  sensor:
+    build: ./sensor
+    depends_on:
+      - broker
+    restart: always
